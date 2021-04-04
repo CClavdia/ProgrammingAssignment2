@@ -24,3 +24,31 @@ cacheSolve <- function(x, ...) {
 }
 # holds the cached value or could give NULL if nothing is cached
 # initially nothing is cached so set it to NULL
+
+
+
+makecachematrix <- function(x = matrix()) {
+  i <- NULL
+  set <- function(y) {
+    x <<- y
+    i <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(inverse) i <<- inverse
+  getinverse <- function() i
+  list(set = set,
+       get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)}
+
+solvecache <- function(x, ...) {
+  i <- x$getinverse()
+  if (!is.null(i)) {
+    message("get cached data")
+    return(i)
+  }
+  data <- x$get()
+  i <- solve(data, ...)
+  x$setinverse(i)
+  i
+}
